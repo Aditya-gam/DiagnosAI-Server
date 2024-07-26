@@ -13,11 +13,11 @@ RUN npm install --only=production
 # Copy the rest of your app's source code
 COPY . .
 
-# Make port 7000 available to the world outside this container
+# Make port 4000 available to the world outside this container
 EXPOSE 4000
 
 # Define environment variable
 ENV NODE_ENV production
 
 # Run app.js when the container launches
-CMD ["node", "app.js"]
+CMD ["node", "src/app.js"]
