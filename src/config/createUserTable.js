@@ -1,5 +1,7 @@
-// src/config/createUserTable.js
-const AWS = require("aws-sdk");
+import AWS from "aws-sdk";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 AWS.config.update({
   region: "us-west-2",

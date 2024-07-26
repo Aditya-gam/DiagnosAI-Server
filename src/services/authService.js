@@ -1,7 +1,6 @@
-// src/services/authService.js
-const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
-const User = require("../models/user");
+import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
+import User from "../models/user.js";
 
 const secretKey = process.env.JWT_SECRET || "your-secret-key"; // Ensure you have a JWT_SECRET in your .env for production
 
@@ -32,7 +31,4 @@ const loginUser = async ({ email, password }) => {
   return null;
 };
 
-module.exports = {
-  registerUser,
-  loginUser,
-};
+export { registerUser, loginUser };

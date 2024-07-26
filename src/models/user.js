@@ -1,5 +1,4 @@
-// src/models/user.js
-const dynamoDB = require("../config/db");
+import dynamoDB from "../config/db.js";
 
 class User {
   static async getUserByEmail(email) {
@@ -58,4 +57,4 @@ class User {
   }
 }
 
-module.exports = User;
+export default User;
