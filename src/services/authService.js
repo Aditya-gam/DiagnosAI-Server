@@ -1,24 +1,32 @@
 // src/services/authService.js
-const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
-const User = require('../models/user');
+const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
+const User = require("../models/user");
 
-const secretKey = process.env.JWT_SECRET || 'your-secret-key'; // Ensure you have a JWT_SECRET in your .env for production
+const secretKey = process.env.JWT_SECRET || "your-secret-key"; // Ensure you have a JWT_SECRET in your .env for production
 
-const registerUser = async ({ email, password }) => {
+const registerUser = async ({ email, password, name }) => {
   const hashedPassword = await bcrypt.hash(password, 10);
-  return User.createUser({ email, password: hashedPassword });
+  const userData = {
+    email,
+    password: hashedPassword,
+    name,
+    created_at: new Date().toISOString(),
+    last_login: new Date().toISOString(),
+  };
+  return User.createUser(userData);
 };
 
 const loginUser = async ({ email, password }) => {
   const user = await User.getUserByEmail(email);
-  if (user && await bcrypt.compare(password, user.password)) {
+  if (user && (await bcrypt.compare(password, user.password))) {
     // Create a token
     const token = jwt.sign(
       { userId: user.id, email: user.email },
       secretKey,
-      { expiresIn: '24h' } // Token expires in 24 hours
+      { expiresIn: "24h" } // Token expires in 24 hours
     );
+    await User.updateLastLogin(email);
     return { user, token }; // Return both user and token
   }
   return null;
@@ -26,5 +34,5 @@ const loginUser = async ({ email, password }) => {
 
 module.exports = {
   registerUser,
-  loginUser
+  loginUser,
 };
